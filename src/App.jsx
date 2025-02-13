@@ -9,7 +9,7 @@ function App() {
     console.log(count);
   };
   const nombre = "Luis";  
-  const elemento = <h1> Hola, {nombre} </h1>;
+  const elemento = <h1> Hola, {nombre} </h1>
 
   return (
     <div className="App">
@@ -17,7 +17,6 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p> {count} </p>
         <button onClick = {sum}>add</button>
-          Edit <code>src/App.js</code> and save to reload.
         <p>{elemento}</p>
         <a
           className="App-link"
