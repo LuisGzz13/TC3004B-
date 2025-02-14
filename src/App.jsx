@@ -6,39 +6,48 @@ import Footer from './components/Footer';
 import Button from './components/Button';
 import Item from './components/Item';
 import List from './components/List';
+import Add from './components/Add';
 
 function App() {
-
-  const item = [
-
+  const [items, setItems] = useState([
     { id: 1, name: "Item 1" },
     { id: 2, name: "Item 2" },
     { id: 3, name: "Item 3" }
-  ];
+  ]);
 
   const [count, setCount] = useState(0);
+
   const sum = () => {
     setCount(count + 1);
     console.log(count);
   };
+  
   const resta = () => {
     setCount(count - 1);
-  }
- 
-  const nombre = "Luis";  
-  const elemento = <h1> Hola, {nombre} </h1>
+  };
 
+  // Define the add function
+  const add = (newItem) => {
+    setItems([...items, { id: items.length + 1, ...newItem }]);
+  };
+
+  const ondelete = (id) => {  
+setItems(items.filter((item) => item.id !== id));
+
+  }
   return (
     <div> 
       <Header />
       {count}
-      <Button name = {"suma"} click={sum}/>
-      <Button name = {"Resta"} click ={resta}/>
-      <Button name = {"Mensaje"} click ={() => alert("Hola")}/>
-      <div>
-      <List items = {item}></List>
-      </div>
-      
+      <Button name={"Suma"} click={sum} />
+      <Button name={"Resta"} click={resta} />
+      <Button name={"Mensaje"} click={() => alert("Hola")} />
+    
+      {/* Pass the add function as a prop */}
+      <Add add={add} />
+      <List items ={items}
+      ondelete = {ondelete}
+      />
       <Footer />
     </div>
   );
