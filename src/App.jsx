@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Button from "./components/Button";
 import List from "./components/List";
 import Add from "./components/Add";
+import SignIn from "./components/SignIn";
 import { AppBar } from "@mui/material";
 import ResponsiveAppBar from "./components/AppBar";
 
@@ -16,8 +17,12 @@ function App() {
     { id: 2, name: "Item 2" },
     { id: 3, name: "Item 3" },
   ]);
-
   const [count, setCount] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Add authentication state
+
+  const handleLogin = () => {
+    setIsAuthenticated(true); // Update authentication status
+  };
 
   const sum = () => {
     setCount(count + 1);
@@ -28,7 +33,6 @@ function App() {
     setCount(count - 1);
   };
 
-  // Define the add function
   const add = (newItem) => {
     setItems([...items, { id: items.length + 1, ...newItem }]);
   };
@@ -37,10 +41,21 @@ function App() {
     setItems(items.filter((item) => item.id !== id));
   };
 
+  // If not authenticated, only show the SignIn component
+  if (!isAuthenticated) {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SignIn onLogin={handleLogin} />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
+  // If authenticated, show the full app
   return (
-    
     <BrowserRouter>
-    <ResponsiveAppBar/>
+      <ResponsiveAppBar/>
       <Header />
       <Routes>
         <Route path="/add" element={<Add add={add} />} />
