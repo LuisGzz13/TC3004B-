@@ -7,7 +7,7 @@ const Add = ({ add }) => {
 
   const onsubmit = (e) => {
     e.preventDefault();
-    if (!name || !price) return; // Prevent adding empty items
+    if (!name || !price) return; // Prevent empty fields
     add({ name, price });
     setName("");  // Clear input fields after submit
     setPrice("");

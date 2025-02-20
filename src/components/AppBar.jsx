@@ -16,7 +16,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-function ResponsiveAppBar({ onLogout }) {  // Recibir onLogout como prop
+function ResponsiveAppBar({ onLogout }) {  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,12 +35,11 @@ function ResponsiveAppBar({ onLogout }) {  // Recibir onLogout como prop
     setAnchorElUser(null);
   };
 
-  // Nueva función para manejar los clics en los ítems del menú
   const handleMenuItemClick = (setting) => {
     if (setting === "Logout" && onLogout) {
-      onLogout(); // Llamar a la función de logout si existe
+      onLogout(); 
     }
-    handleCloseUserMenu(); // Cerrar el menú en todos los casos
+    handleCloseUserMenu(); 
   };
 
   return (
@@ -155,7 +154,7 @@ function ResponsiveAppBar({ onLogout }) {  // Recibir onLogout como prop
               {settings.map((setting) => (
                 <MenuItem 
                   key={setting} 
-                  onClick={() => handleMenuItemClick(setting)}  // Usar la nueva función
+                  onClick={() => handleMenuItemClick(setting)}  
                 >
                   <Typography sx={{ textAlign: "center" }}>
                     {setting}

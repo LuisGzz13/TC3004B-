@@ -79,11 +79,11 @@ function AppContent({ isAuthenticated, setIsAuthenticated, items, setItems, coun
             <Route path="/" element={<Navigate to="/items" replace />} />
           </>
         )}
-        {/* Redirigir cualquier ruta no válida al login si no está autenticado */}
+        {/* Regresa a login si no esta verificado */}
         {!isAuthenticated && (
           <Route path="*" element={<Navigate to="/" replace />} />
         )}
-        {/* Redirigir cualquier ruta no válida a /items si está autenticado */}
+        {/* Regresa a pantalla principal si esta verificado */}
         {isAuthenticated && (
           <Route path="*" element={<Navigate to="/items" replace />} />
         )}

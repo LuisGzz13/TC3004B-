@@ -9,7 +9,7 @@ import {
   Paper 
 } from '@mui/material';
 
-const SignIn = ({ onLogin }) => {  // Add onLogin prop
+const SignIn = ({ onLogin }) => {  
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''
@@ -41,8 +41,8 @@ const SignIn = ({ onLogin }) => {  // Add onLogin prop
 
     if (credentials.username === validCredentials.username && 
         credentials.password === validCredentials.password) {
-      // Call the onLogin callback and redirect
-      onLogin();  // Update authentication status in parent
+      
+      onLogin();  
       navigate('/items');
     } else {
       setError('Invalid username or password');
