@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; 
+import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom"; 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
@@ -11,17 +11,18 @@ import SignIn from "./components/SignIn";
 import { AppBar } from "@mui/material";
 import ResponsiveAppBar from "./components/AppBar";
 
-function App() {
-  const [items, setItems] = useState([
-    { id: 1, name: "Item 1" },
-    { id: 2, name: "Item 2" },
-    { id: 3, name: "Item 3" },
-  ]);
-  const [count, setCount] = useState(0);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Add authentication state
+// Componente interno que usa useNavigate
+function AppContent({ isAuthenticated, setIsAuthenticated, items, setItems, count, setCount }) {
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    setIsAuthenticated(true); // Update authentication status
+    setIsAuthenticated(true);
+    navigate("/items");
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    navigate("/");
   };
 
   const sum = () => {
@@ -41,35 +42,75 @@ function App() {
     setItems(items.filter((item) => item.id !== id));
   };
 
-  // If not authenticated, only show the SignIn component
-  if (!isAuthenticated) {
-    return (
-      <BrowserRouter>
-        <Routes>
+  return (
+    <>
+      {isAuthenticated && <ResponsiveAppBar onLogout={handleLogout} />}
+      <Routes>
+        {!isAuthenticated ? (
           <Route path="/" element={<SignIn onLogin={handleLogin} />} />
-        </Routes>
-      </BrowserRouter>
-    );
-  }
+        ) : (
+          <>
+            <Route
+              path="/items"
+              element={
+                <>
+                  <Header />
+                  <List items={items} ondelete={ondelete} />
+                  <div>
+                    <h2>Counter: {count}</h2>
+                    <Button name={"Suma"} click={sum} />
+                    <Button name={"Resta"} click={resta} />
+                    <Button name={"Mensaje"} click={() => alert("Hola")} />
+                  </div>
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/add"
+              element={
+                <>
+                  <Header />
+                  <Add add={add} />
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="/" element={<Navigate to="/items" replace />} />
+          </>
+        )}
+        {/* Redirigir cualquier ruta no válida al login si no está autenticado */}
+        {!isAuthenticated && (
+          <Route path="*" element={<Navigate to="/" replace />} />
+        )}
+        {/* Redirigir cualquier ruta no válida a /items si está autenticado */}
+        {isAuthenticated && (
+          <Route path="*" element={<Navigate to="/items" replace />} />
+        )}
+      </Routes>
+    </>
+  );
+}
 
-  // If authenticated, show the full app
+function App() {
+  const [items, setItems] = useState([
+    { id: 1, name: "Item 1" },
+    { id: 2, name: "Item 2" },
+    { id: 3, name: "Item 3" },
+  ]);
+  const [count, setCount] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <BrowserRouter>
-      <ResponsiveAppBar/>
-      <Header />
-      <Routes>
-        <Route path="/add" element={<Add add={add} />} />
-        <Route path="/items" element={<List items={items} ondelete={ondelete} />} /> 
-      </Routes>
-      
-      <div>
-        <h2>Counter: {count}</h2>
-        <Button name={"Suma"} click={sum} />
-        <Button name={"Resta"} click={resta} />
-        <Button name={"Mensaje"} click={() => alert("Hola")} />
-      </div>
-
-      <Footer />
+      <AppContent 
+        isAuthenticated={isAuthenticated}
+        setIsAuthenticated={setIsAuthenticated}
+        items={items}
+        setItems={setItems}
+        count={count}
+        setCount={setCount}
+      />
     </BrowserRouter>
   );
 }
